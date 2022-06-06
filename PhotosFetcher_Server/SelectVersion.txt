@@ -1,0 +1,220 @@
+###################
+#                 #
+#     Imports     #
+#                 #
+###################
+
+from selenium.webdriver.common.keys import Keys
+from selenium import webdriver
+from bs4 import BeautifulSoup
+from datetime import datetime
+from itertools import islice
+# (Source: https://stackoverflow.com/a/57912823/2196301)
+import chromedriver_binary  # Adds chromedriver binary to path
+from os import listdir
+import requests as req
+import pandas as pd
+import selenium
+import platform
+import pathlib
+import logging
+import ctypes
+import time
+import bs4
+import os
+from socket import *
+import threading
+
+###################
+#                 #
+#    Constants    #
+#                 #
+###################
+
+USER_AGENT              = { 'User-agent' : 'Mozilla/5.0' }
+PATH_OF_GENERAL_OUTPUTS = ".\\outputs\\"
+SERVER_IP = get_host_ip_addr()
+SERVER_PORT = 5000
+LINKS = {}
+CLIENTS = []
+BUFFER_SIZE = 4096
+
+###################
+#                 #
+#     Methods     #
+#                 #
+###################
+
+def print_all_object_attributes(object):
+    """
+    print_all_object_attributes()
+
+    Purpose:
+        Print all attributes names of a given object and the attributes values
+        (Source: https://stackoverflow.com/a/53820171/2196301)
+
+    Parameters:
+        [object] object - The object which all his attributes should be printed
+
+    Return Value:
+        None
+    """
+    
+    for attributeName in dir(object):
+        attributeData = getattr(object, attributeName)
+        print(f"[{attributeName}] --> {attributeData}")
+
+    return
+
+def load_soup_object(url):
+    """
+    load_soup_object()
+
+    Purpose:
+        Create a BeautifulSoup object which allows to parse the given url.
+
+    Parameters:
+        [str] url - The url of the webpage which should be parsed with the BeautifulSoup object
+
+    Return Value:
+        [bs4.BeautifulSoup] souper - The BeautifulSoup object which allows to parse the given url.
+    """
+
+    # Request the html file from the server
+    url_response = req.get(url, headers = USER_AGENT)
+
+    # Extract the html file content
+    url_html = url_response.text
+
+    # Create a parser for the current page
+    souper = BeautifulSoup(url_html, "html.parser")
+
+    return souper
+
+def create_programs_directories():
+    """
+    create_programs_directories()
+
+    Purpose:
+        This method is responsible to create all the neccessary directories for the program.
+    Parameters:
+        None
+    Return Value:
+        None
+    """
+
+    for path in [PATH_OF_CSV_FILES, PATH_OF_FAILED_AIRPLANES]:
+        if (is_folder_exists(path) == False):
+            os.makedirs(path)
+
+    return
+
+def is_folder_exists(path):
+    """
+    is_folder_exists()
+
+    Purpose:
+        This method is responsible to check if a given folder path exists or not.
+    Parameters:
+        [str] path - The path which should be checked
+    Return Value:
+        [bool] <>  - True - if the folder exists, otherwise False.
+    """
+
+    return os.path.isdir(path)
+
+def read_links_file(path = ".\links.txt"):
+    """
+    """
+
+    with open(path, "rb") as fileobj:
+        readLinks = fileobj.readline().strip().rstrip()
+        LINKS = { currentLink: False for currentLink in readLinks }
+
+    return LINKS
+
+def get_host_ip():
+    """
+    """
+
+    SERVER_IP = gethostbyname(gethostname())
+
+    return
+
+def create_server_socket():
+    """
+    """
+
+    serverSock = socket(AF_INET, SOCK_STREAM)
+    serverSock.bind((SERVER_IP, SERVER_PORT))
+    serverSock.listen(LINKS)
+
+    return serverSock
+
+def main():
+    """
+    """
+
+    get_host_ip()
+    links = readread_links_file()
+
+    serverSock = create_server_socket()
+
+    readySocketsToRead  = [ serverSock ]
+    readySocketsToWrite = []
+
+    import select
+
+    while readySocketsToRead != []:
+
+        select.select(readySocketsToRead, readySocketsToWrite, [])
+
+        for socket in readySocketsToRead:
+
+            # If a new connection has been established
+            if socket is serverSock:
+
+                clientSock, clientAddr = serverSock.accept()
+
+                print(f"New Connection established. Client address is: {clientAddr}")
+
+                # Set the new socket to be non blocking
+                clientSock.setblocking(False)
+
+                # insert the new client to the list of all the clients, in order to recognize them later.
+                readySocketsToRead.append(clientSock)
+
+            else:
+                data = socket.recv(BUFFER_SIZE)
+
+                if data == "get link":
+
+                    # Get the first non-occupied link from the list of links
+                    availableLink = [link for link in LINKS.keys() if LINKS[link] == False][0]
+
+                    print(f"Sending the link {availableLink} to the client {clientAddr}")
+
+                    # Send the link to the current client
+                    socket.send(availableLink)
+
+                    # Set the current link as occupied
+                    LINKS[availableLink] = True
+
+                elif data == "new file":
+                    pass
+                elif "release " in data:
+
+                    clientLink = data.split("release ", 1)[1]
+
+                    # Set the current link as non-occupied
+                    LINKS[clientLink] = False
+
+                    print(f"{clientLink} is free to use again. {clientAddr} is offline.")
+                    pass
+                else:
+                    pass
+
+    return
+
+if __name__ == '__main__':
+    main()

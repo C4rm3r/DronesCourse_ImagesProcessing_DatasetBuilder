@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29020.237
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "PhotosFetcher_Server", "PhotosFetcher_Server\PhotosFetcher_Server.pyproj", "{F320F45C-56E5-41FB-A0EA-3D8E2B75A5F0}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "PhotosFetcher_Client", "PhotosFetcher_Client\PhotosFetcher_Client.pyproj", "{B9EB1A9C-EF15-4BF8-AC81-30C77836EF24}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F320F45C-56E5-41FB-A0EA-3D8E2B75A5F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F320F45C-56E5-41FB-A0EA-3D8E2B75A5F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9EB1A9C-EF15-4BF8-AC81-30C77836EF24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9EB1A9C-EF15-4BF8-AC81-30C77836EF24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3196BC50-D1EA-425B-92C3-DE46EAFA03FE}
+	EndGlobalSection
+EndGlobal
