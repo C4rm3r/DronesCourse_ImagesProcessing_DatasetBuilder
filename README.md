@@ -11,11 +11,12 @@ The system was developed by Aviv Aharon from the Image Processing Team (Drones C
 
 1. Clone the GitHub repository to your local machine
 
-2. Prepare as many PCs (which will behave as Clients) as you want
+2. In the server directory, go to the links.txt file and fulfill it to contain the desired videos.
 
-3. Install the required dependencies in the client's PCs. Run the following: `pip install -r requirements.txt`
+3. Prepare as many PCs (which will behave as Clients) as you want
+   **Note:** The maximum number of clients which can be launched equlas to the number of the links in the file `links.txt` in the server side.
 
-4. In the server directory, go to the links.txt file and fulfill it to contain the desired videos.
+4. Install the required dependencies in the client's PCs. Run the following: `pip install -r requirements.txt`
 
 5. Run the server
    Note: you can open the project with the .sln file and run the server from there or from the command line...)
