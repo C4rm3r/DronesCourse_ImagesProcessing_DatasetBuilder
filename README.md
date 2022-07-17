@@ -1,7 +1,7 @@
 # Drones Course - Image Processing Team - Dataset Builder
 
 This GitHub repository contains a Client-Server based system that allows data scientists to photos from youtube videos.
-This system was developed in order to allow the creation of an Images Dataset without an actual need to purchase a camera and take photos manually.
+This system was developed to allow the creation of an Images Dataset without an actual need to purchase a camera and take photos manually.
 
 The server side contains a text file that all the desired videos to capture images from should be placed in it. System Administrators should add links to the videos (either live or not) and the system will use them.
 
@@ -15,7 +15,7 @@ The system was developed by Aviv Aharon from the Image Processing Team (Drones C
 
 3. Prepare as many PCs (which will behave as Clients) as you want
    
-   **Note:** The maximum number of clients which can be launched equlas to the number of the links in the file `links.txt` in the server side.
+   **Note:** The maximum number of clients which can be launched equals the number of the links in the file `links.txt` on the server side.
 
 4. Install the required dependencies in the client's PCs. Run the following: `pip install -r requirements.txt`
 
